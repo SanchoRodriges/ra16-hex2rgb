@@ -4,9 +4,11 @@ export default function HEX2RGB () {
 
   const [hexValue, setHEX] = useState('');
 
-  const [rgbValue, setRGB] = useState('RGB');
-
-  const [rgbaValue, setRGBa] = useState('');
+  const [rgb, setRGB] = useState({
+    rgbText: 'RGB',
+    rgbValue: '',
+    rgbaValue: ''
+  });
 
   const onSubmitForm = (e) => {
     e.preventDefault();
@@ -31,7 +33,7 @@ export default function HEX2RGB () {
     const newHexValue = hex.split('');
 
     if (newHexValue[0] !== '#') {
-      setRGB('Ошибка');
+      error();
       return false;
     }
 
@@ -40,12 +42,23 @@ export default function HEX2RGB () {
     const thirdNumRgb = hexToDec(newHexValue[5] + newHexValue[6]);
 
     if (!isNaN(firstNumRgb) && !isNaN(secondNumRgb) && !isNaN(thirdNumRgb)) {
-      setRGB('rgb(' + firstNumRgb + ', ' + secondNumRgb + ', ' + thirdNumRgb + ')');
-      setRGBa('rgba(' + firstNumRgb + ', ' + secondNumRgb + ', ' + thirdNumRgb + ', 0.5)');
+      setRGB({
+        rgbText: 'rgb(' + firstNumRgb + ', ' + secondNumRgb + ', ' + thirdNumRgb + ')',
+        rgbValue: 'rgb(' + firstNumRgb + ', ' + secondNumRgb + ', ' + thirdNumRgb + ')',
+        rgbaValue: 'rgba(' + firstNumRgb + ', ' + secondNumRgb + ', ' + thirdNumRgb + ', 0.5)'
+      });
       return false;
     }
     
-    setRGB('Ошибка');    
+    error();
+  }
+
+  const error = () => {
+    setRGB({
+      rgbText: 'Ошибка',
+      rgbValue: 'rgb(255, 0, 0)',
+      rgbaValue: 'rgba(255, 0, 0, 0.5)'
+    });    
   }
 
   const hexToDec = (hex) => {
@@ -53,19 +66,18 @@ export default function HEX2RGB () {
   }
 
   return (
-    <div className="wrapper" style={{backgroundColor: rgbaValue }}>
+    <div className="wrapper" style={{backgroundColor: rgb.rgbaValue }}>
       <div className="converter">
-      <form onSubmit={onSubmitForm}>
-        <input 
-          className="convert-input"
-          value={hexValue} placeholder="Цвет в формате #e6f0ff"
-          onChange={onChangeHandler} />
-      </form>
-      <div className="convert-result" style={{backgroundColor: rgbValue }}>
-        {rgbValue ? rgbValue : '' } 
+        <form onSubmit={onSubmitForm}>
+          <input 
+            className="convert-input"
+            value={hexValue} placeholder="Цвет в формате #e6f0ff"
+            onChange={onChangeHandler} />
+        </form>
+        <div className="convert-result" style={{backgroundColor: rgb.rgbValue }}>
+          {rgb.rgbText}
+        </div>
       </div>
     </div>
-    </div>
-
   )
 }
