@@ -37,20 +37,23 @@ export default function HEX2RGB () {
       return false;
     }
 
+    for (let i = 1; i < 7; i++) {
+      if (!/[0-9a-fA-F]+/.test(newHexValue[i])) {
+        error();
+        return false;
+      }
+    }
+
     const firstNumRgb = hexToDec(newHexValue[1] + newHexValue[2]);
     const secondNumRgb = hexToDec(newHexValue[3] + newHexValue[4]);
     const thirdNumRgb = hexToDec(newHexValue[5] + newHexValue[6]);
 
-    if (!isNaN(firstNumRgb) && !isNaN(secondNumRgb) && !isNaN(thirdNumRgb)) {
-      setRGB({
-        rgbText: 'rgb(' + firstNumRgb + ', ' + secondNumRgb + ', ' + thirdNumRgb + ')',
-        rgbValue: 'rgb(' + firstNumRgb + ', ' + secondNumRgb + ', ' + thirdNumRgb + ')',
-        rgbaValue: 'rgba(' + firstNumRgb + ', ' + secondNumRgb + ', ' + thirdNumRgb + ', 0.5)'
-      });
-      return false;
-    }
-    
-    error();
+    setRGB({
+      rgbText: 'rgb(' + firstNumRgb + ', ' + secondNumRgb + ', ' + thirdNumRgb + ')',
+      rgbValue: 'rgb(' + firstNumRgb + ', ' + secondNumRgb + ', ' + thirdNumRgb + ')',
+      rgbaValue: 'rgba(' + firstNumRgb + ', ' + secondNumRgb + ', ' + thirdNumRgb + ', 0.5)'
+    });
+
   }
 
   const error = () => {
